@@ -22,19 +22,20 @@ public class BoatFacade
     }
 
     /**
-     *
      * @param _emf
      * @return the instance of this facade.
      */
-    public static BoatFacade getBoatFacade(EntityManagerFactory _emf) {
-        if (instance == null) {
+    public static BoatFacade getBoatFacade(EntityManagerFactory _emf)
+    {
+        if (instance == null)
+        {
             emf = _emf;
             instance = new BoatFacade();
         }
         return instance;
     }
 
-// US-4
+    // US-4
     public BoatDTO createBoat(BoatDTO boatDTO)
     {
         EntityManager em = emf.createEntityManager();
@@ -50,7 +51,7 @@ public class BoatFacade
             em.persist(boat);
             em.getTransaction().commit();
 
-        }finally
+        } finally
         {
             em.close();
         }
@@ -69,13 +70,14 @@ public class BoatFacade
             em.getTransaction().begin();
             em.merge(boat);
             em.getTransaction().commit();
-        }finally
+        } finally
         {
             em.close();
         }
         return new BoatDTO(boat);
     }
 
+    //US-6
     public BoatDTO updateBoat(BoatDTO boatDTO)
     {
         EntityManager em = emf.createEntityManager();
@@ -97,21 +99,50 @@ public class BoatFacade
 
         }
         System.out.println(boat.getOwners());
-try
-{
-    TypedQuery<Harbour> query = em.createQuery("SELECT h FROM Harbour h WHERE h.id =:harbourId", Harbour.class);
-    query.setParameter("harbourId", boatDTO.getHarbourID());
-    Harbour harbour = query.getSingleResult();
-    boat.setHarbour(harbour);
+        try
+        {
+            TypedQuery<Harbour> query = em.createQuery("SELECT h FROM Harbour h WHERE h.id =:harbourId", Harbour.class);
+            query.setParameter("harbourId", boatDTO.getHarbourID());
+            Harbour harbour = query.getSingleResult();
+            boat.setHarbour(harbour);
 
-    em.getTransaction().begin();
-    em.merge(boat);
-    em.getTransaction().commit();
+            em.getTransaction().begin();
+            em.merge(boat);
+            em.getTransaction().commit();
 
-}finally
-{
-    em.close();
-}
-return new BoatDTO(boat);
+        } finally
+        {
+            em.close();
+        }
+        return new BoatDTO(boat);
+    }
+
+    public BoatDTO deleteBoat(long boatId)
+    {
+        EntityManager em = emf.createEntityManager();
+        Boat boat = em.find(Boat.class, boatId);
+        try
+        {
+            em.getTransaction().begin();
+            em.createNativeQuery("DELETE FROM BOAT_OWNER WHERE boats_id = ?").setParameter(1, boat.getId()).executeUpdate();
+            em.remove(boat);
+            em.getTransaction().commit();
+        }finally
+        {
+            em.close();
+        }
+        return new BoatDTO(boat);
+    }
+
+    public List<Boat> getAllBoats()
+    {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Boat> query = em.createQuery("SELECT b FROM Boat b", Boat.class);
+            List<Boat> result = query.getResultList();
+            return result;
+        } finally {
+            em.close();
+        }
     }
 }

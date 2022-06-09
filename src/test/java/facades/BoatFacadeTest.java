@@ -133,6 +133,12 @@ class BoatFacadeTest
     //US-7
     @Test
     public void deleteBoatTest(){
+        facade.deleteBoat(b3.getId());
+        List<Boat> boats = facade.getAllBoats();
+        int expected = 3;
+        int actual = boats.size();
+
+        assertEquals(expected, actual);
 
     }
 
