@@ -47,6 +47,15 @@ public class Boat implements Serializable
         this.harbour = harbour;
     }
 
+    public Boat(String brand, String make, String name, String image)
+    {
+        this.brand = brand;
+        this.make = make;
+        this.name = name;
+        this.image = image;
+        this.owners = new ArrayList<>();
+    }
+
     public long getId()
     {
         return id;

@@ -21,3 +21,6 @@ GET http://localhost:8080/ca2_startcode_backend_war_exploded/api/harbour/1
 
 ###
 GET http://localhost:8080/ca2_startcode_backend_war_exploded/api/owner/all
+
+###
+GET http://localhost:8080/ca2_startcode_backend_war_exploded/api/owner/all
