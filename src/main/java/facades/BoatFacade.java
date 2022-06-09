@@ -56,4 +56,21 @@ public class BoatFacade
     }
 
 
+    public BoatDTO connectBoatToHarbour(long boatID, long harbourId)
+    {
+        EntityManager em = emf.createEntityManager();
+        Boat boat = em.find(Boat.class, boatID);
+        Harbour harbour = em.find(Harbour.class, harbourId);
+        boat.setHarbour(harbour);
+        try
+        {
+            em.getTransaction().begin();
+            em.merge(boat);
+            em.getTransaction().commit();
+        }finally
+        {
+            em.close();
+        }
+        return new BoatDTO(boat);
+    }
 }

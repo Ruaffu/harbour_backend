@@ -23,7 +23,7 @@ class BoatFacadeTest
     private static EntityManagerFactory emf;
     private static BoatFacade facade;
     private static HarbourFacade harbourFacade;
-    private static Boat b1,b2,b3;
+    private static Boat b1,b2,b3,b5;
     private static Harbour h1,h2;
     private static Owner ow1,ow2;
 
@@ -45,6 +45,7 @@ class BoatFacadeTest
         b1 = new Boat("Malibu Boats", "M-series","M240","image",h1);
         b2 = new Boat("Malibu Boats", "Responce","TXi MO","image",h1);
         b3 = new Boat("Sunseeker", "Predator","60 evo","image",h2);
+        b5 = new Boat("momoney", "Predator2","evo","image15");
 
 
         h1.addBoat(b1);
@@ -63,6 +64,7 @@ class BoatFacadeTest
             em.persist(b1);
             em.persist(b2);
             em.persist(b3);
+            em.persist(b5);
             em.persist(h1);
             em.persist(h2);
             em.persist(ow1);
@@ -91,6 +93,32 @@ class BoatFacadeTest
         int actual = boats.size();
 
         assertEquals(expected, actual);
+    }
+
+    //US-5
+    @Test
+    public void connectBoatWithHarbourTest(){
+        facade.connectBoatToHarbour(b5.getId(), h2.getId());
+
+        List<Boat> boats = harbourFacade.getBoatsByHarbourID(h2.getId());
+
+        int expected = 2;
+        int actual = boats.size();
+
+        assertEquals(expected, actual);
+
+    }
+
+    //US-6
+    @Test
+    public void updateInformationTest(){
+
+    }
+
+    //US-7
+    @Test
+    public void deleteBoatTest(){
+
     }
 
 }
