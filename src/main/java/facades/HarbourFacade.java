@@ -1,6 +1,7 @@
 package facades;
 
 import entities.Boat;
+import entities.Owner;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -44,5 +45,13 @@ public class HarbourFacade
         {
             em.close();
         }
+    }
+
+    public List<Owner> getOwnerByBoatId(long id)
+    {
+        EntityManager em = emf.createEntityManager();
+
+        Boat boat = em.find(Boat.class, id);
+        return boat.getOwners();
     }
 }

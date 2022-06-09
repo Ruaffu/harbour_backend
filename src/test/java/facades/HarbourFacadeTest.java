@@ -25,7 +25,7 @@ class HarbourFacadeTest
     private static HarbourFacade facade;
     private static Boat b1,b2,b3;
     private static Harbour h1,h2;
-    private static Owner ow1;
+    private static Owner ow1,ow2;
 
     @BeforeAll
     public static void setUpClass() {
@@ -37,15 +37,22 @@ class HarbourFacadeTest
     void setUp()
     {
         EntityManager em = emf.createEntityManager();
-        h1 = new Harbour("harbourName1","testAddress1", 30);
-        h2 = new Harbour("harbourName2","testAddress2", 60);
+        ow1 = new Owner("Bob Fellows","Millionaire Street","2423423");
+        ow2 = new Owner("Bo momo","Yup Street","5559999");
+        h1 = new Harbour("Victoria Harbour","Admiralty, Hong Kong",50);
+        h2  = new Harbour("VNeko Harbour","Antarctica",10);
+        b1 = new Boat("Malibu Boats", "M-series","M240","image",h1);
+        b2 = new Boat("Malibu Boats", "Responce","TXi MO","image",h1);
+        b3 = new Boat("Sunseeker", "Predator","60 evo","image",h2);
 
-        b1 = new Boat("brand1", "make1", "testName1", "image1", h1);
-        b2 = new Boat("brand2", "make2", "testName2", "image2", h1);
-        b3 = new Boat("brand3", "make3", "testName3", "image3", h2);
 
+        h1.addBoat(b1);
+        h1.addBoat(b2);
+        h2.addBoat(b3);
 
-        ow1 = new Owner("owner1","ownerAddress1","32432423");
+        ow1.addBoat(b1);
+        ow1.addBoat(b2);
+        ow2.addBoat(b3);
 
         try {
             em.getTransaction().begin();
@@ -58,6 +65,7 @@ class HarbourFacadeTest
             em.persist(h1);
             em.persist(h2);
             em.persist(ow1);
+            em.persist(ow2);
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -75,6 +83,16 @@ class HarbourFacadeTest
         List<Boat> boats = facade.getBoatsByHarbourID(h1.getId());
         int expected = 2;
         int actual = boats.size();
+
+        assertEquals(expected, actual);
+    }
+
+    //US-3
+    @Test
+    public void getOwnersByBoat(){
+        List<Owner> owners = facade.getOwnerByBoatId(b1.getId());
+        int expected = 1;
+        int actual = owners.size();
 
         assertEquals(expected, actual);
     }
