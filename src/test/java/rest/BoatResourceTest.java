@@ -1,5 +1,7 @@
 package rest;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dtos.BoatDTO;
 import entities.Boat;
 import entities.Harbour;
@@ -19,6 +21,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -33,9 +37,10 @@ class BoatResourceTest
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
     private static BoatFacade facade;
-    private static Boat b1,b2,b3;
+    private static Boat b1,b2,b3,b4;
     private static Harbour h1,h2;
     private static Owner ow1,ow2;
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     static HttpServer startServer() {
         ResourceConfig rc = ResourceConfig.forApplication(new ApplicationConfig());
@@ -74,6 +79,7 @@ class BoatResourceTest
         b1 = new Boat("Malibu Boats", "M-series","M240","image",h1);
         b2 = new Boat("Malibu Boats", "Responce","TXi MO","image",h1);
         b3 = new Boat("Sunseeker", "Predator","60 evo","image",h2);
+        b4 = new Boat("sdfsf", "Predator","60 evo","image");
 
 
         h1.addBoat(b1);
@@ -92,6 +98,7 @@ class BoatResourceTest
             em.persist(b1);
             em.persist(b2);
             em.persist(b3);
+            em.persist(b4);
             em.persist(h1);
             em.persist(h2);
             em.persist(ow1);
@@ -120,5 +127,51 @@ class BoatResourceTest
                 .then()
                 .statusCode(200)
                 .body("brand", equalTo("testBrand"));
+    }
+
+    @Test
+    public void testConnectHarbour() throws Exception{
+        given()
+                .contentType("application/json")
+                .when()
+                .put("/boats/{bid}/connect/{hid}", b4.getId(), h1.getId())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("harbourID", equalTo(Integer.valueOf(String.valueOf(h1.getId()))));
+
+    }
+
+    @Test
+    public void testUpdateBoat() throws Exception{
+        Boat b5 = new Boat("Malibu Boats", "M-series","yak","image",h1);
+        ow1.addBoat(b5);
+        BoatDTO boatDTO = new BoatDTO(b5);
+
+        given()
+                .contentType("application/json")
+                .and()
+                .body(GSON.toJson(boatDTO))
+                .when()
+                .put("/boats/{bid}/update", b3.getId())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("name", equalTo("yak"))
+                .body("harbourID", equalTo(Integer.valueOf(String.valueOf(h1.getId()))));
+
+    }
+
+    @Test
+    public void testDeleteBoat() throws Exception{
+        given()
+                .contentType("application/json")
+                .and()
+                .when()
+                .delete("/boats/{bid}/delete", b3.getId())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("name", equalTo("60 evo"));
     }
 }

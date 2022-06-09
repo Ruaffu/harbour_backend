@@ -49,9 +49,7 @@ public class BoatResource
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("{bid}/update")
     public String updateBoat(@PathParam("bid") long boatId,String data){
-        System.out.println(data);
         BoatDTO boatDTO = GSON.fromJson(data, BoatDTO.class);
-        System.out.println(boatDTO);
         BoatDTO updatedBoatDTO = FACADE.updateBoat(boatId,boatDTO);
         return GSON.toJson(updatedBoatDTO);
     }

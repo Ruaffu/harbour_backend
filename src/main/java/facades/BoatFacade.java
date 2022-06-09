@@ -89,7 +89,6 @@ public class BoatFacade
 
         //clears owners
         boat.getOwners().clear();
-        System.out.println(boatDTO.getOwners());
 
         for (String owner : boatDTO.getOwners())
         {
@@ -98,7 +97,6 @@ public class BoatFacade
             boat.addOwner(ownerFound);
 
         }
-        System.out.println(boat.getOwners());
         try
         {
             TypedQuery<Harbour> query = em.createQuery("SELECT h FROM Harbour h WHERE h.id =:harbourId", Harbour.class);

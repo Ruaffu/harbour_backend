@@ -1,5 +1,7 @@
 package rest;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import entities.Boat;
 import entities.Harbour;
 import entities.Owner;
@@ -34,6 +36,7 @@ class OwnerResourceTest
     private static Boat b1,b2,b3;
     private static Harbour h1,h2;
     private static Owner ow1,ow2;
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     static HttpServer startServer() {
         ResourceConfig rc = ResourceConfig.forApplication(new ApplicationConfig());
