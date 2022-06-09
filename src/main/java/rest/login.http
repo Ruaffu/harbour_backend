@@ -24,3 +24,18 @@ GET http://localhost:8080/ca2_startcode_backend_war_exploded/api/owner/all
 
 ###
 GET http://localhost:8080/ca2_startcode_backend_war_exploded/api/owner/all
+
+###
+POST http://localhost:8080/ca2_startcode_backend_war_exploded/api/boats/create
+
+{"brand" : "yakyak", "make" : "bo selecta", "name" : "bit", "image" : "img","owners" : ["jack"], "harbourID" : "1"}
+
+
+###
+PUT http://localhost:8080/ca2_startcode_backend_war_exploded/api/boats/3/update
+
+{"brand" : "test1", "make" : "test1", "name" : "test1", "image" : "image", "owners" : ["Bo momo"], "harbourID" : "2"}
+
+
+###
+DELETE http://localhost:8080/ca2_startcode_backend_war_exploded/api/boats/4/delete

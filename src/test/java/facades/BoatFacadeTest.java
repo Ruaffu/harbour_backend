@@ -121,7 +121,7 @@ class BoatFacadeTest
         b1.addOwner(ow2);
 
         BoatDTO updatedBoat = new BoatDTO(b1);
-        facade.updateBoat(updatedBoat);
+        facade.updateBoat(b1.getId(),updatedBoat);
 
         assertEquals("new Brand", updatedBoat.getBrand());
         assertEquals(h2.getId(), updatedBoat.getHarbourID());

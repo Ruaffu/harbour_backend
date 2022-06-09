@@ -78,10 +78,10 @@ public class BoatFacade
     }
 
     //US-6
-    public BoatDTO updateBoat(BoatDTO boatDTO)
+    public BoatDTO updateBoat(long boatId, BoatDTO boatDTO)
     {
         EntityManager em = emf.createEntityManager();
-        Boat boat = em.find(Boat.class, boatDTO.getId());
+        Boat boat = em.find(Boat.class, boatId);
         boat.setBrand(boatDTO.getBrand());
         boat.setMake(boatDTO.getMake());
         boat.setName(boatDTO.getName());
@@ -91,11 +91,11 @@ public class BoatFacade
         boat.getOwners().clear();
         System.out.println(boatDTO.getOwners());
 
-        for (String own : boatDTO.getOwners())
+        for (String owner : boatDTO.getOwners())
         {
-            Owner owner = em.createQuery("SELECT o FROM Owner o WHERE o.name = :own", Owner.class).setParameter("own", own).getSingleResult();
+            Owner ownerFound = em.createQuery("SELECT o FROM Owner o WHERE o.name = :owner", Owner.class).setParameter("owner", owner).getSingleResult();
 
-            boat.addOwner(owner);
+            boat.addOwner(ownerFound);
 
         }
         System.out.println(boat.getOwners());
