@@ -87,4 +87,12 @@ public class Owner implements Serializable
     {
         this.boats = boats;
     }
+
+    public void addBoat(Boat boat){
+        if (boat != null){
+            this.boats.add(boat);
+            boat.getOwners().add(this);
+        }
+
+    }
 }

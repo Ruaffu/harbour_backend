@@ -86,4 +86,11 @@ public class Harbour implements Serializable
     {
         this.boats = boats;
     }
+
+    public void  addBoat(Boat boat){
+        this.boats.add(boat);
+        if (boat != null){
+            boat.setHarbour(this);
+        }
+    }
 }
