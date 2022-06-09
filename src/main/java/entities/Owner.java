@@ -3,6 +3,7 @@ package entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,6 +37,7 @@ public class Owner implements Serializable
         this.name = name;
         this.address = address;
         this.phone = phone;
+        this.boats = new ArrayList<>();
     }
 
     public long getId()

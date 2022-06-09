@@ -2,6 +2,7 @@ package entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -35,6 +36,7 @@ public class Harbour implements Serializable
         this.name = name;
         this.address = address;
         this.capacity = capacity;
+        this.boats = new ArrayList<>();
     }
 
     public long getId()
@@ -88,9 +90,6 @@ public class Harbour implements Serializable
     }
 
     public void  addBoat(Boat boat){
-        this.boats.add(boat);
-        if (boat != null){
-            boat.setHarbour(this);
-        }
+        boats.add(boat);
     }
 }
