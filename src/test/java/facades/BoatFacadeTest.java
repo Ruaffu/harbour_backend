@@ -1,6 +1,7 @@
 package facades;
 
 import dtos.BoatDTO;
+import dtos.OwnerDTO;
 import entities.Boat;
 import entities.Harbour;
 import entities.Owner;
@@ -14,6 +15,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //Uncomment the line below, to temporarily disable this test
@@ -112,6 +115,18 @@ class BoatFacadeTest
     //US-6
     @Test
     public void updateInformationTest(){
+
+        b1.setBrand("new Brand");
+        b1.setHarbour(h2);
+        b1.addOwner(ow2);
+
+        BoatDTO updatedBoat = new BoatDTO(b1);
+        facade.updateBoat(updatedBoat);
+
+        assertEquals("new Brand", updatedBoat.getBrand());
+        assertEquals(h2.getId(), updatedBoat.getHarbourID());
+
+        OwnerDTO ownerDTO = new OwnerDTO(ow2);
 
     }
 

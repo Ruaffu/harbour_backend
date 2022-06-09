@@ -73,4 +73,9 @@ public class BoatFacade
         }
         return new BoatDTO(boat);
     }
+
+    public BoatDTO updateBoat(BoatDTO boatDTO)
+    {
+        EntityManager em = emf.createEntityManager();
+    }
 }
